@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Word Blocker</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        width: 200px;
+        padding: 10px;
+      }
+      input {
+        width: calc(100% - 22px);
+        padding: 5px;
+      }
+      button {
+        width: 100%;
+        padding: 5px;
+        margin-top: 10px;
+      }
+      ul {
+        padding-left: 20px;
+      }
+      li {
+        margin-bottom: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>Block Keywords</h3>
+    <input type="text" id="keyword" placeholder="Enter keyword" />
+    <button id="addKeyword">Add Keyword</button>
+    <ul id="keywordsList"></ul>
+    <script src="popup.js"></script>
+  </body>
+</html>
