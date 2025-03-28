@@ -6,47 +6,57 @@ if (window.location.href.includes("https://www.linkedin.com/feed/")) {
 if (window.location.href.includes("https://www.instagram.com/reels/")) {
   window.location.href = "https://www.instagram.com";
 }
+if(window.location.href.includes("https://www.instagram.com")){
+  removeReelsButton();  
+}
 if (window.location.href.includes("https://www.instagram.com/explore/")) {
   window.location.href = "https://www.instagram.com";
 }
 if (window.location.href.includes("https://www.youtube.com/shorts/")) {
   window.location.href = "https://www.youtube.com";
 }
-if (window.location.href.includes("https://www.bing.com")) {
-  // Wait for the DOM to fully load first
-  window.onload = function() {
-    setTimeout(function() {
-      const anchorTags = document.querySelectorAll('a');
-      // console.log(anchorTags);
-      // check is there any anchortag or not 
-      if(anchorTags.length>0){
-        // Loop through each anchor tag and remove the target attribute
-        anchorTags.forEach(anchor => {
-          anchor.removeAttribute('target');
-        });
-        //Trigger alert when all anchor tag are processed
-        console.log("All done good to go.")
-      }
-    }, 5000);
-  };
-}
 
-if (window.location.href.includes("https://www.instagram.com/explore/")) {
-  
-}
-
-function checkTitle() {
-    const title = document.title;
-    chrome.runtime.sendMessage({ type: 'checkTitle', title: title });
-  }
-  
-  let previousTitle = document.title;
-  setInterval(() => {
-    if (document.title !== previousTitle) {
-      previousTitle = document.title;
-      checkTitle();
+// Remove instagram reels sidebar button
+function removeReelsButton() {
+  // Check if the current URL contains 'instagram.com'
+  if (window.location.href.includes("https://www.instagram.com")) {
+    const reelsButton = document.querySelector('a[href="/reels/"]'); // Target the Reels button by href
+    if (reelsButton) {
+      reelsButton.parentElement.remove(); // Remove the parent div
+      console.log("✅ Reels button removed successfully.");
     }
-  }, 1000);
-  
-  checkTitle(); // Initial check when the script runs
-  
+  }
+}
+
+// Run the function when the DOM is fully loaded (only on Instagram)
+window.addEventListener("load", () => {
+  if (window.location.href.includes("https://www.instagram.com")) {
+    setTimeout(removeReelsButton, 1000); // Delay to ensure DOM is ready
+  }
+});
+
+// Run the function on URL changes (for SPA navigation on Instagram)
+let lastUrl = window.location.href;
+setInterval(() => {
+  if (
+    window.location.href !== lastUrl &&
+    window.location.href.includes("https://www.instagram.com")
+  ) {
+    lastUrl = window.location.href;
+    setTimeout(removeReelsButton, 1000);
+  }
+}, 1000);
+function checkTitle() {
+  const title = document.title;
+  chrome.runtime.sendMessage({ type: "checkTitle", title: title });
+}
+
+let previousTitle = document.title;
+setInterval(() => {
+  if (document.title !== previousTitle) {
+    previousTitle = document.title;
+    checkTitle();
+  }
+}, 1000);
+
+checkTitle(); // Initial check when the script runs
